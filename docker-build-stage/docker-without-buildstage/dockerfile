@@ -1,0 +1,20 @@
+#BASE IMAGE
+FROM ubuntu As build
+
+#INSTALLTION FOR GOLANG IN UBUTU
+RUN apt-get update && apt-get install -y golang-go
+
+#THIS IS NOT MUCH IMP AS YOU WISH
+ENV GO111MODULE=off
+
+#SOURCE & DESTINATION
+COPY . .
+
+#NO NEED BUT DOING IS GOOD
+WORKDIR /app
+#below 2 steps is for making distroless image means it redue image from big to small size [i reduced 621 mb to 0 b ]
+FROM scratch
+COPY --from=build /app /app
+
+#WITHOUT GIVING WORKING DIRECT IT WIL CREATE DURING RUN TIME CALE ENTRYPOINT
+ENTRYPOINT ["/app"]

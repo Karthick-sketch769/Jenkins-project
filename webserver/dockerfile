@@ -1,0 +1,7 @@
+FROM nginx
+WORKDIR /server
+COPY ./index.html /var/opt/nginx/server
+RUN apt install nginx
+RUN service nginx start
+EXPOSE 80
+CMD ["nginx", "index.html"]

@@ -1,0 +1,26 @@
+#Base image
+FROM ubuntu As build
+
+#package to install anf update ubuntu if we use any other insteab of ubuntu u need to use that
+RUN apt-get update && apt-get install -y golang-go
+
+#THIS IS NOT MUCH IMP AS YOU WISH
+ENV GO111MODULE=off
+
+#SOURCE & DESTINATION
+COPY . .
+
+#ENABLED AS GOLANG RUN TIME AND DO BUILD & DESTI
+# RUN CGO_ENABLED=0 go build -o /app . (DOUBT)
+
+#if you add the below 2 steps u will get distroless image/minimum size image, withouT using MULTI STAGE BUILD i got img size 621MB 
+#JUST SEE WITH MULTI STAGE BUT FOR THIS ABOVE STEPSS TO BE CONTINUED AS SAME
+# the below step scratch stands for execution without using  go run filename.go command & copy the compiled binary from build stage
+
+FROM scratch
+
+#copy the compiled binary from build stage
+COPY --from=build /app /app
+
+#WITHOUT GIVING WORKING DIRECT IT WIL CREATE DURING RUN TIME CALE ENTRYPOINT
+ENTRYPOINT ["/app"]

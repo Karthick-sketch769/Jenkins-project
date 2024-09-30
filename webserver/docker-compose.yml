@@ -1,0 +1,12 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    container_name: yum
+    environment:
+      - PORT=80
+      - SERVER_NAME=nginx
+    volumes:
+      - ./index.html:/vat/opt/nginx
